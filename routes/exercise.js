@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const ExerciseService = require('../services/ExerciseService');
 
+const categoryList = [ 'Brust', 'Bauch', 'Arme', 'Beine', 'Rücken', 'Po', 'Waden', 'Schultern'];
+
 
 router.post('/create/', async (req, res) => {
   if (req.body.user.isAdmin){
@@ -59,6 +61,23 @@ router.put('/update/', async (req, res) => {
     });
   }
 
+});
+
+// TODO: TOGO ugly
+router.get('/listaftercat', async (req, res) => {
+  const exerciseList = {'Brust': [], 'Bauch' : [], 'Arme' : [], 'Beine' : [], 'Rücken' : [], 'Po' : [], 'Waden' : [], 'Schultern' : []};
+  for (const category of categoryList ){
+    let [err, exercises] = await ExerciseService.findExercises({category});
+    if (err) {
+      console.log(err);
+    } else {
+      exerciseList[category].push(exercises);
+    }
+  }
+  res.json({
+    status: true,
+    categories: exerciseList
+  });
 });
 
 router.delete('/delete/', async (req, res) => {

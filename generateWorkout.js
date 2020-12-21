@@ -13,18 +13,7 @@ const schedule = () => cron.schedule('59 23 * * *', async () => {
     if (allUsers) {
       allUsers.forEach( async (user) => {
         let exerciseList = [];
-        // user; level
-        // execises
-        // Brust, Bauch, Arme, Beine, Rücken, Po, Waden, Schultern, 
 
-        // let listOfExcerisess = Array(5).fill(0).map(async () => {
-        //   let [err, exercise ] = await ExerciseService.getRandomExercise("insert cat here");
-        //   if (err) {
-        //     console.log(err, 'get random exercise');
-        //   } else {
-        //     return exercise
-        //   }
-        // });
         for(let i = 0; i < 5; i++) {
           let [err, exercise ] = await ExerciseService.getRandomExercise("insert cat here");
           if (err) {

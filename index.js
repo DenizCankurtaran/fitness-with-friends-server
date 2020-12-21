@@ -21,7 +21,7 @@ app.use(cors({
 }));
 
 app.use('/', routes.auth);
-app.use(middleware.auth);
+// app.use(middleware.auth);
 
 app.use('/user', routes.user);
 app.use('/exercise', routes.exercise);

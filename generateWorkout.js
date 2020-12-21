@@ -34,7 +34,7 @@ const schedule = () => cron.schedule('59 23 * * *', async () => {
           }
         }
 
-        let [err, workout] = await WorkoutService.createWorkout({userId: user._id, exercises: exerciseList});
+        let [err, workout] = await WorkoutService.createWorkout({userId: user._id, exercises: exerciseList, username: user.username});
         if (err) {
           console.log(err, 'create workout');
         } else {

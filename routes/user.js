@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const UserService = require('../services/UserService');
+const WorkoutService = require('../services/WorkoutService');
 
 router.get('/one/', async(req, res) => {
   let [err, user] = await UserService.findUserById(req.body.query._id);
@@ -74,32 +75,50 @@ router.put('/add/', async (req, res) => {
 
 });
 
-router.put('/update/', async (req, res) => {
-  let {user, upUser, update} = req.body;
-  if (user._id === upUser._id ) {
-      let [err, user] = await UserService.updateUser(upUser._id, update);
-      if (err) {
-          res.status(500);
-          res.json({
-              status: false,
-              error: err.message,
-              stack: process.env.NODE_ENV === 'production' ? '' : err.stack
-          });
-      } else {
-          res.status(202);
-          res.json({
-              status: true,
-              updatedUser: user
-          });
-      }
+router.get('/friendsprogress/', async (req, res) => {
+  let { _id } = req.body.user;
+  let [err, user] = await UserService.findUserById(_id);
+  if (err) {
+    res.status(500);
+    res.json({
+        status: false,
+        error: err.message,
+        stack: process.env.NODE_ENV === 'production' ? '' : err.stack
+    });
   } else {
-      res.status(403);
-      res.json({
-          status: false,
-          error: 'not allowed'
-      });
+    let friendsWorkout = user.friends.map(async (id) => {
+      let [err, workout] = await WorkoutService.findLatestWorkoutByUserId(id);
+      if (err){
+        console.log(err, 'Line 91 user.js');
+      } else {
+        return workout;
+      }
+    });
+    res.json({
+      status: true,
+      listOfFriendsWorkout: friendsWorkout
+    });
   }
 
+});
+
+router.put('/update/', async (req, res) => {
+  let {user, upUser, update} = req.body;
+  let [err, user] = await UserService.updateUser(upUser._id, update);
+  if (err) {
+      res.status(500);
+      res.json({
+          status: false,
+          error: err.message,
+          stack: process.env.NODE_ENV === 'production' ? '' : err.stack
+    });
+  } else {
+    res.status(202);
+    res.json({
+    status: true,
+    updatedUser: user
+    });
+  }
 });
 
 router.delete('/delete/', async (req, res) => {

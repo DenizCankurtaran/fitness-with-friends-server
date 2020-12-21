@@ -3,6 +3,7 @@ const Exercise = require('./ExerciseSchema');
 
 const WorkoutSchema = mongoose.Schema({
     userId: { type: String, required: true },
+    username: { type: String },
     absolved: { type: Boolean, default: false},
     // exercises: [Exercise]
     exercises: [Object]

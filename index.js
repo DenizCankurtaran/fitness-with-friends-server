@@ -8,8 +8,6 @@ const routes = require('./routes');
 const middleware = require('./middleware');
 const database = require('./db');
 
-console.log(process.env);
-
 database.initDb();
 schedule();
 

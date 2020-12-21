@@ -86,17 +86,19 @@ router.get('/friendsprogress/', async (req, res) => {
         stack: process.env.NODE_ENV === 'production' ? '' : err.stack
     });
   } else {
-    let friendsWorkout = user.friends.map(async (id) => {
-      let [err, workout] = await WorkoutService.findLatestWorkoutByUserId(id);
+    let listOfFriendsWorkout = [];
+
+    for(const id of user.friends){
+      let [err, workout] = await WorkoutService.findLatestWorkoutByUserId({userId: id});
       if (err){
         console.log(err, 'Line 91 user.js');
       } else {
-        return workout;
+        listOfFriendsWorkout.push(workout);
       }
-    });
+    }
     res.json({
       status: true,
-      listOfFriendsWorkout: friendsWorkout
+      listOfFriendsWorkout
     });
   }
 

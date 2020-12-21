@@ -43,7 +43,6 @@ const schedule = () => cron.schedule('59 23 * * *', async () => {
       });
     }
   }
-  console.log(allUsers);
 });
 
 module.exports = schedule;

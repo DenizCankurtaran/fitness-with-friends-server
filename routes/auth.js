@@ -57,12 +57,12 @@ router.post('/login/', async (req, res) => {
 });
 
 router.post('/signup/', async (req, res) => {
-    let { username, password, email } = req.body.user;
+    let { username, password, level } = req.body.user;
 
     const [err, user] = await UserService.createUser({
         username,
         password,
-        email
+        level
     });
     if (err) {
         res.status(403);

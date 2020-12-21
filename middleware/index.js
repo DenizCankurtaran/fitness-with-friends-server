@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 const UserService = require('../services/UserService');
 
+let adminList = [];
+
 const auth = (req, res, next) => {
     let token = req.headers.authorization;
     if (token) {
@@ -22,6 +24,34 @@ const auth = (req, res, next) => {
         });
     }
 }
+
+const isAdmin = async (req, res, next) => {
+    if(req.body.user){
+        if(req.body.user.isAdmin){
+            if (!adminList.includes(req.body.user._id)){
+                const [err, user] = await UserService.findUserById(req.body.user._id);
+                if(err){
+                    res.status(500);
+                    next(err);
+                }else {
+                    if(user.isAdmin){
+                        adminList.push(user._id);
+                        next();
+                    }else {
+                        res.status(404);
+                        const error = new Error('not a admin');
+                        next(error);
+                    }   
+                }
+            }
+        } else {
+            next();
+        }
+    } else {
+        next();
+    }
+}
+
 
 const cannotGet = (req, res, next) => {
     const error = new Error(`cannot get ${req.originalUrl}`);

@@ -1,3 +1,4 @@
+const { exercise } = require('../routes');
 const Exercise = require('../schemas/ExerciseSchema');
 
 const createExercise = async (data) => {
@@ -46,10 +47,24 @@ const deleteExercise = async (id) => {
     return result;
 }
 
+//TODO
+const getRandomExercise = async (cat) => {
+    const count = await Exercise.count();
+    const random = Math.floor(Math.random() * count);
+    let result = Exercise.findOne().skip(random).then(exercise => {
+        return [undefined, exercise]
+    }).catch(err => {
+        return [err, undefined];
+    });
+
+    return result;
+}
+
 module.exports = {
     createExercise,
     findExercise,
     findExerciseById,
     updateExercise,
-    deleteExercise
+    deleteExercise,
+    getRandomExercise
 }

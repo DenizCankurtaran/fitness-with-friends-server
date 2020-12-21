@@ -28,6 +28,15 @@ const findWorkoutById = async (id) => {
     return result;
 }
 
+const findLatestWorkoutByUserId = async (query) => {
+    let result = await Workout.findOne(query).sort('-created_at').then(workout => {
+        return [undefined, workout];
+    }).catch(err => {
+        return [err, undefined];
+    });
+    return result;
+}
+
 const updateWorkout = async (id, data) => {
     let result = await Workout.findByIdAndUpdate(id, data).then(workout => {
         return [undefined, workout];
@@ -51,5 +60,6 @@ module.exports = {
     findWorkout,
     findWorkoutById,
     updateWorkout,
-    deleteWorkout
+    deleteWorkout,
+    findLatestWorkoutByUserId
 }

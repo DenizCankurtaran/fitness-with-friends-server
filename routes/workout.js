@@ -25,7 +25,7 @@ const UserService = require('../services/UserService');
 //   }
 // });
 
-router.get('/', async (req, res) => {
+router.post('/', async (req, res) => {
   let { level, _id } = req.body.user;
   let [err, user] = await UserService.findUserById(_id);
   if (err) {

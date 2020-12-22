@@ -29,9 +29,10 @@
           "isAdmin": false,
           "_id": "5dskal3k34lk3jlq61027241",
           "createdAt": "2020-12-21T16:50:49.781Z"
+        }
         ``` 
 ## /user
-- ### GET /one/
+- ### POST /one/
   - request 
     - ```
       "query": {
@@ -48,7 +49,7 @@
           "createdAt": "2020-12-21T16:50:49.781Z"
       }
       ``` 
-- ### GET /search/
+- ### POST /search/
   - request 
     - ```
       "query": {
@@ -70,7 +71,7 @@
         "__v": 0
       },...]
       ```
-- ### GET /friendsprogress/
+- ### POST /friendsprogress/
   - request 
     - ```
       "user": {
@@ -111,7 +112,7 @@
       "status": true
       ```
 ## /workout
-- ### GET /
+- ### POST /
   - request 
     - ```
       "user": {
@@ -172,22 +173,22 @@
     - ```
       "status": true,
       "exercise": {
-      "amount": [
-        {
-          "Beginner": 10
-        },
-        {
-          "Expert": 20
-        }
-      ],
-      "absolved": false,
-      "_id": "asdasdsa",
-      "exercise": "Liegestütze",
-      "category": "Brust",
-      "createdAt": "2020-12-21T17:51:53.084Z",
-      "updatedAt": "2020-12-21T17:51:53.084Z",
-      "__v": 0
-    }
+        "amount": [
+          {
+            "Beginner": 10
+          },
+          {
+            "Expert": 20
+          }
+        ],
+        "absolved": false,
+        "_id": "asdasdsa",
+        "exercise": "Liegestütze",
+        "category": "Brust",
+        "createdAt": "2020-12-21T17:51:53.084Z",
+        "updatedAt": "2020-12-21T17:51:53.084Z",
+        "__v": 0
+      }
       ```
 - ### PUT /update/
   - request 

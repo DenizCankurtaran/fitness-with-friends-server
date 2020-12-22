@@ -3,7 +3,7 @@ const router = express.Router();
 const UserService = require('../services/UserService');
 const WorkoutService = require('../services/WorkoutService');
 
-router.get('/one/', async(req, res) => {
+router.post('/one/', async(req, res) => {
   let [err, user] = await UserService.findUserById(req.body.query._id);
   if (err) {
       res.status(500);
@@ -21,7 +21,7 @@ router.get('/one/', async(req, res) => {
   }
 });
 
-router.get('/search/', async (req, res) => {
+router.post('/search/', async (req, res) => {
   let { username } = req.body.query;
   let [err, users] = await UserService.findUsers({username});
   if (err) {
@@ -75,7 +75,7 @@ router.put('/add/', async (req, res) => {
 
 });
 
-router.get('/friendsprogress/', async (req, res) => {
+router.post('/friendsprogress/', async (req, res) => {
   let { _id } = req.body.user;
   let [err, user] = await UserService.findUserById(_id);
   if (err) {

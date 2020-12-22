@@ -104,24 +104,24 @@ router.post('/friendsprogress/', async (req, res) => {
 
 });
 
-// router.put('/update/', async (req, res) => {
-//   let {user, upUser, update} = req.body;
-//   let [err, user] = await UserService.updateUser(upUser._id, update);
-//   if (err) {
-//       res.status(500);
-//       res.json({
-//           status: false,
-//           error: err.message,
-//           stack: process.env.NODE_ENV === 'production' ? '' : err.stack
-//     });
-//   } else {
-//     res.status(202);
-//     res.json({
-//     status: true,
-//     updatedUser: user
-//     });
-//   }
-// });
+router.put('/update/', async (req, res) => {
+  let {user, update} = req.body;
+  let [err, updatedUser] = await UserService.updateUser(user._id, update);
+  if (err) {
+      res.status(500);
+      res.json({
+          status: false,
+          error: err.message,
+          stack: process.env.NODE_ENV === 'production' ? '' : err.stack
+    });
+  } else {
+    res.status(202);
+    res.json({
+    status: true,
+    updatedUser
+    });
+  }
+});
 
 router.delete('/delete/', async (req, res) => {
   let {user, delUser} = req.body;

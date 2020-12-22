@@ -111,6 +111,25 @@
     - ```
       "status": true
       ```
+- ### PUT /update/
+  - request 
+    - ```
+      "user": {
+        _id
+      },
+      "update": {
+        // everything is upgradeble..., example
+        "prefrences" : {
+          "theme": 1
+        }
+
+
+      } 
+      ```
+  - response
+    - ```
+      "status": true
+      ```
 ## /workout
 - ### POST /
   - request 

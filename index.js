@@ -12,7 +12,7 @@ database.initDb();
 schedule();
 
 const port = process.env.PORT || 8080;
-
+console.log(process.env.EXAMPLE_TEST);
 const app = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());

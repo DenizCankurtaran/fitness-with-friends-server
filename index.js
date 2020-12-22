@@ -26,6 +26,7 @@ app.use('/', routes.auth);
 app.use('/user', routes.user);
 app.use('/exercise', routes.exercise);
 app.use('/workout', routes.workout);
+app.use('/category', routes.category);
 
 app.use(middleware.cannotGet);
 app.use(middleware.errorHandler);

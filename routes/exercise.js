@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ExerciseService = require('../services/ExerciseService');
+const CategoryService = require('../services/CategoryService');
 
 const categoryList = [ 'Brust', 'Bauch', 'Arme', 'Beine', 'Rücken', 'Po', 'Waden', 'Schultern'];
 
@@ -63,25 +64,29 @@ router.put('/update/', async (req, res) => {
 
 });
 
-// TODO: TOGO ugly
-router.get('/listaftercat', async (req, res) => {
+router.get('/listaftercat/', async (req, res) => {
   const exerciseList = [];
-  for (const category of ['Brust', 'Bauch', 'Arme', 'Beine', 'Rücken', 'Po', 'Waden', 'Schultern']){
-    let [err, exercises] = await ExerciseService.findExercises({category});
-    if (err) {
-      console.log(err);
-    } else {
-      exerciseList.push({
-        id: category + '_id',
-        name: category,
-        exercises: exercises
-      });
+  let [err, categories] = await CategoryService.getAllCategories();
+  if (err) {
+    console.log(err);
+  } else {
+    for (const category of categories ){
+      let [err, exercises] = await ExerciseService.findExercises({category: category.name});
+      if (err) {
+        console.log(err);
+      } else {
+        exerciseList.push({
+          name: category.name,
+          exercises: exercises
+        });
+      }
     }
+    res.json({
+      status: true,
+      categories: exerciseList
+    });
   }
-  res.json({
-    status: true,
-    categories: exerciseList
-  });
+  
 });
 
 router.delete('/delete/', async (req, res) => {

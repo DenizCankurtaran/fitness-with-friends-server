@@ -23,7 +23,7 @@ router.post('/one/', async(req, res) => {
 
 router.post('/search/', async (req, res) => {
   let { username } = req.body.query;
-  let [err, users] = await UserService.findUsers({username});
+  let [err, users] = await UserService.findUsers(username);
   if (err) {
     res.status(500);
     res.json({

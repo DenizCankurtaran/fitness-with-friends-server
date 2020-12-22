@@ -11,7 +11,8 @@ const createUser = async (data) => {
 }
 
 const findUsers = async (query) => {
-    let result = await User.find(query).then(users => {
+    const regExp = new RegExp(query, 'gi');
+    let result = await User.find({ username: regExp }).then(users => {
         return [undefined, users];
     }).catch(err => {
         return [err, undefined];

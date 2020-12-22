@@ -65,13 +65,17 @@ router.put('/update/', async (req, res) => {
 
 // TODO: TOGO ugly
 router.get('/listaftercat', async (req, res) => {
-  const exerciseList = {'Brust': [], 'Bauch' : [], 'Arme' : [], 'Beine' : [], 'Rücken' : [], 'Po' : [], 'Waden' : [], 'Schultern' : []};
-  for (const category of categoryList ){
+  const exerciseList = [];
+  for (const category of ['Brust', 'Bauch', 'Arme', 'Beine', 'Rücken', 'Po', 'Waden', 'Schultern']){
     let [err, exercises] = await ExerciseService.findExercises({category});
     if (err) {
       console.log(err);
     } else {
-      exerciseList[category].push(exercises);
+      exerciseList.push({
+        id: category + '_id',
+        name: category,
+        exercises: exercises
+      });
     }
   }
   res.json({

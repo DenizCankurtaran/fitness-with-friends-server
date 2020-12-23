@@ -19,6 +19,15 @@ const findWorkout = async (query) => {
     return result;
 }
 
+const findWorkouts = async (query) => {
+    let result = await Workout.find(query).sort('-createdAt').then(workouts => {
+        return [undefined, workouts];
+    }).catch(err => {
+        return [err, undefined];
+    });
+    return result;
+}
+
 const findWorkoutById = async (id) => {
     let result = await Workout.findById(id).then(workout => {
         return [undefined, workout];
@@ -29,7 +38,7 @@ const findWorkoutById = async (id) => {
 }
 
 const findLatestWorkoutByUserId = async (query) => {
-    let result = await Workout.findOne(query).sort('-created_at').then(workout => {
+    let result = await Workout.findOne(query).sort('-createdAt').then(workout => {
         return [undefined, workout];
     }).catch(err => {
         return [err, undefined];
@@ -59,6 +68,7 @@ module.exports = {
     createWorkout,
     findWorkout,
     findWorkoutById,
+    findWorkouts,
     updateWorkout,
     deleteWorkout,
     findLatestWorkoutByUserId

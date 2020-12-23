@@ -12,7 +12,6 @@ database.initDb();
 schedule();
 
 const port = process.env.PORT || 8080;
-console.log(process.env.EXAMPLE_TEST);
 const app = express();
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -20,6 +19,12 @@ app.use(cors({
   origin: '*'
 }));
 
+app.get('/', (req, res) => {
+  res.json({
+    status: true,
+    message: 'F.I.T by Görkem Yalcinkaya, Deniz Cankurtaran \r\n https://github.com/DenizCankurtaran/fit-in-time'
+  });
+});
 app.use('/', routes.auth);
 // app.use(middleware.auth);
 

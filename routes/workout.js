@@ -32,5 +32,24 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.post('/history/', async (req, res) => {
+  let { _id } = req.body.user;
+  let [err, workouts] = await WorkoutService.findWorkouts({userId: _id});
+  if (err) {
+    res.status(500);
+    res.json({
+        status: false,
+        error: err.message,
+        stack: process.env.NODE_ENV === 'production' ? '' : err.stack
+    });
+  } else {
+    res.json({
+      status: true,
+      workouts
+    })
+  }
+
+});
+
 module.exports = router;
 

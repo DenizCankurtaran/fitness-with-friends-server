@@ -3,8 +3,6 @@ const router = express.Router();
 const ExerciseService = require('../services/ExerciseService');
 const CategoryService = require('../services/CategoryService');
 
-const categoryList = [ 'Brust', 'Bauch', 'Arme', 'Beine', 'Rücken', 'Po', 'Waden', 'Schultern'];
-
 
 router.post('/create/', async (req, res) => {
   if (req.body.user.isAdmin){

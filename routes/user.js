@@ -22,22 +22,49 @@ router.post('/one/', async(req, res) => {
 });
 
 router.post('/search/', async (req, res) => {
-  let { username } = req.body.query;
-  let [err, users] = await UserService.findUsers(username);
-  if (err) {
+let { _id } = req.body.user;
+let { username } = req.body.query;
+let [err, user] = await UserService.findUserById(_id);
+if (err) {
+  res.status(500);
+  res.json({
+    status: false,
+    error: error.message,
+    stack: process.env.NODE_ENV === 'production' ? '' : error.stack
+  });
+} else {
+  let [error, users] = await UserService.findUsers(username);
+  if (error) {
     res.status(500);
     res.json({
-        status: false,
-        error: err.message,
-        stack: process.env.NODE_ENV === 'production' ? '' : err.stack
+      status: false,
+      error: error.message,
+      stack: process.env.NODE_ENV === 'production' ? '' : error.stack
     });
   } else {
+    let searchList = [];
+    for (const result of users) {
+      if (user.friends.indexOf(result._id) === -1 && user._id !== result._id ) {
+        console.log(result._id);
+        console.log(user._id);
+        let friend = {
+          username: result.username,
+          _id: result._id,
+          level: result.level,
+          friends: result.friends,
+          theme: result.theme
+        }
+        searchList.push(friend)
+      }
+    }
     res.json({
       status: true,
-      users //man schickt passwort mit lol
-    });
+      users: searchList
+    })
   }
+}
 });
+  
 
 router.put('/add/', async (req, res) => {
   let { _id } = req.body.user;

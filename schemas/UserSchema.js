@@ -4,9 +4,11 @@ const bcrypt = require('bcrypt');
 const UserSchema = mongoose.Schema({
     username: { type: String, required: true, unique: true, minlength: 2, maxlength: 64 },
     password: { type: String, required: true, minlength: 5, maxlength: 255 },
-    level: { type: String, default: 'Beginner' },
+    level: { type: Number, default: 0 },
     isAdmin: { type: Boolean, default: false },
-    friends: { type: [String], default: [] }
+    friends: { type: [String], default: [] },
+    theme: { type: Number, default: 0 },
+    machines: { type: [String], default: [] }
     
 }, { timestamps: true });
 

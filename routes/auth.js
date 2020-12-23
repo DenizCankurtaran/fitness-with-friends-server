@@ -1,6 +1,7 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const UserService = require('../services/UserService');
+const { generate } = require('../generateWorkout');
 const router = express.Router();
 
 router.post('/login/', async (req, res) => {
@@ -72,6 +73,7 @@ router.post('/signup/', async (req, res) => {
             stack: process.env.NODE_ENV === 'production' ? '' : err.stack
         });
     } else {
+        generate(user);
         res.json({
             status: true
         });

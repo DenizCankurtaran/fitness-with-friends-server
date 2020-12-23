@@ -4,7 +4,7 @@ const ExerciseService = require('./services/ExerciseService');
 const WorkoutService = require('./services/WorkoutService');
 //const schedule = cron.schedule('59 23 * * *', () => {
 
-const schedule = () => cron.schedule('* * * * *', async () => {
+const schedule = () => cron.schedule('59 23 * * *', async () => {
   console.log('mach generieren');
   const [err, allUsers] = await UserService.findUsers({});
   if (err) {

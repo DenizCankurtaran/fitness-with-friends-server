@@ -75,7 +75,7 @@ router.post('/friends/', async (req, res) => {
     });
   } else {
     let friends = [];
-    for (const friendId in user.friends){
+    for (const friendId of user.friends){
       let [error, result] = await UserService.findUserById(friendId);
       if (error) {
         console.log(error);

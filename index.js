@@ -3,13 +3,13 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { schedule } = require('./generateWorkout');
+const { job } = require('./generateWorkout');
 const routes = require('./routes');
 const middleware = require('./middleware');
 const database = require('./db');
 
 database.initDb();
-schedule();
+job.start();
 
 const port = process.env.PORT || 8080;
 const app = express();

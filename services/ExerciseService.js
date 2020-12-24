@@ -57,7 +57,7 @@ const deleteExercise = async (id) => {
 
 //TODO
 const getRandomExercise = async (cat) => {
-    const count = await Exercise.count();
+    const count = await Exercise.countDocuments();
     const random = Math.floor(Math.random() * count);
     let result = Exercise.findOne().skip(random).then(exercise => {
         return [undefined, exercise]

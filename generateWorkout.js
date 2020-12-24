@@ -1,11 +1,11 @@
-const cron = require('node-cron');
+const CronJob = require('cron').CronJob;
 const UserService = require('./services/UserService');
 const ExerciseService = require('./services/ExerciseService');
 const WorkoutService = require('./services/WorkoutService');
 //const schedule = cron.schedule('59 23 * * *', () => {
 
-const schedule = () => cron.schedule('59 23 * * *', async () => {
-  console.log('mach generieren');
+const job = new CronJob('0 14 * * *', async () => {
+  console.log('start generating workouts');
   const [err, allUsers] = await UserService.findUsers({});
   if (err) {
     console.log(err, 'find users');
@@ -37,6 +37,6 @@ const generate = async (user) => {
  
 
 module.exports = {
-  schedule,
+  job,
   generate
 };

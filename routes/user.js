@@ -44,9 +44,7 @@ if (err) {
   } else {
     let searchList = [];
     for (const result of users) {
-      if (user.friends.indexOf(result._id) === -1 && user._id !== result._id ) {
-        console.log(result._id);
-        console.log(user._id);
+      if (user.friends.indexOf(result._id) === -1 && user._id.toString() !== result._id.toString() ) {
         let friend = {
           username: result.username,
           _id: result._id,

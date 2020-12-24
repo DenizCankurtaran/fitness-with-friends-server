@@ -16,7 +16,6 @@ router.post('/', async (req, res) => {
     if (user) {
       let [err, latestWorkout] = await WorkoutService.findLatestWorkoutByUserId({userId: _id});
       if (latestWorkout) {
-        console.log(latestWorkout);
         res.json({
           status: true,
           latestWorkout
@@ -28,6 +27,57 @@ router.post('/', async (req, res) => {
         status: false,
         error: 'user does not exist',
       });
+    }
+  }
+});
+
+router.post('/update/', async (req, res) => {
+  let { _id } = req.body.workout;
+  let [err, workout] = await WorkoutService.update(_id, req.body.update);
+  if (err) {
+    res.status(500);
+    res.json({
+      status: true,
+      latestWorkout
+    });
+  } else {
+    res.json({
+      status: true,
+      workout
+    })
+  }
+});
+
+router.post('/absolvedExercise/', async (req, res) => {
+  let workoutId = req.body.workout._id;
+  let exerciseId = req.body.exercise._id;
+ 
+  let [err, workout] = await WorkoutService.findWorkoutById(workoutId);
+  if (err) {
+    res.status(500);
+    res.json({
+      status: true,
+      latestWorkout
+    });
+  } else {
+    let tmp = workout.exercises.map(exercise => {
+      if (exercise._id.toString() === exerciseId.toString()) {
+        exercise.absolved = req.body.exercise.absolved;
+      }
+      return exercise;
+    });
+    let [error, updatedWorkout] = await WorkoutService.updateWorkout(workoutId,{exercises: tmp});
+    if (error){
+      res.status(500);
+      res.json({
+        status: true,
+        latestWorkout
+      });
+    } else {
+      res.json({
+        status: true,
+        updatedWorkout
+      })
     }
   }
 });

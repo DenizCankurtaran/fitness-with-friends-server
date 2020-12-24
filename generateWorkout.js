@@ -4,14 +4,14 @@ const ExerciseService = require('./services/ExerciseService');
 const WorkoutService = require('./services/WorkoutService');
 //const schedule = cron.schedule('59 23 * * *', () => {
 
-const job = new CronJob('59 23 * * *', async () => {
+const job = new CronJob('56 23 * * *', async () => {
   console.log('start generating workouts');
   const [err, allUsers] = await UserService.findUsers({});
   if (err) {
     console.log(err, 'find users');
   } else {
     if (allUsers) {
-      allUsers.forEach( (user) => {
+      allUsers.forEach( async (user) => {
         let [error, workout] = await WorkoutService.findLatestWorkoutByUserId({userId: user._id});
         if (workout) {
           if ( workout.absolved ) {
@@ -33,11 +33,21 @@ const job = new CronJob('59 23 * * *', async () => {
 const generate = async (user) => {
   let exerciseList = [];
   for(let i = 0; i < 5; i++) {
-    let [err, exercise ] = await ExerciseService.getRandomExercise("insert cat here");
+    let [err, randomExercise ] = await ExerciseService.getRandomExercise("insert cat here");
     if (err) {
       console.log(err, 'get random exercise');
     } else {
-      exerciseList.push(exercise);
+      let {exercise, description, category, amount, machine, absolved} = randomExercise;
+      let tmp = {
+        exercise,
+        description,
+        category,
+        amount,
+        machine,
+        absolved,
+        _id: i
+      } 
+      exerciseList.push(tmp);
     }
   }
 

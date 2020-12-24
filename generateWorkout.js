@@ -28,7 +28,7 @@ const job = new CronJob('56 23 * * *', async () => {
       });
     }
   }
-});
+}, null, false, 'Europe/Berlin');
 
 const generate = async (user) => {
   let exerciseList = [];

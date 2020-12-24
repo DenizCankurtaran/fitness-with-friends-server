@@ -60,13 +60,17 @@ router.post('/absolvedExercise/', async (req, res) => {
       latestWorkout
     });
   } else {
+    let counter = 0;
     let tmp = workout.exercises.map(exercise => {
       if (exercise._id.toString() === exerciseId.toString()) {
         exercise.absolved = req.body.exercise.absolved;
       }
+      if (exercise.absolved) {
+        counter++;
+      }
       return exercise;
     });
-    let [error, updatedWorkout] = await WorkoutService.updateWorkout(workoutId,{exercises: tmp});
+    let [error, updatedWorkout] = await WorkoutService.updateWorkout(workoutId,{exercises: tmp, progress: counter});
     if (error){
       res.status(500);
       res.json({

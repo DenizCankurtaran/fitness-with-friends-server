@@ -6,7 +6,8 @@ const WorkoutSchema = mongoose.Schema({
     username: { type: String },
     absolved: { type: Boolean, default: false},
     // exercises: [Exercise]
-    exercises: [Object]
+    exercises: [Object],
+    progress: { type: Number, default: 0 }
     
 }, { timestamps: true });
 

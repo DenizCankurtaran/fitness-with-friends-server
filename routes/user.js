@@ -33,18 +33,53 @@ if (err) {
     stack: process.env.NODE_ENV === 'production' ? '' : error.stack
   });
 } else {
-  let [error, users] = await UserService.findUsers(username);
-  if (error) {
+    let [error, users] = await UserService.findUsers(username);
+    if (error) {
+      res.status(500);
+      res.json({
+        status: false,
+        error: error.message,
+        stack: process.env.NODE_ENV === 'production' ? '' : error.stack
+      });
+    } else {
+      let searchList = [];
+      for (const result of users) {
+        if (user.friends.indexOf(result._id) === -1 && user._id.toString() !== result._id.toString() ) {
+          let friend = {
+            username: result.username,
+            _id: result._id,
+            level: result.level,
+            friends: result.friends,
+            theme: result.theme
+          }
+          searchList.push(friend)
+        }
+      }
+      res.json({
+        status: true,
+        users: searchList
+      })
+    }
+  }
+});
+
+router.post('/friends/', async (req, res) => {
+  let { _id } = req.body.user;
+  let [err, user] = await UserService.findUserById(_id);
+  if (err) {
     res.status(500);
     res.json({
-      status: false,
+      status: true,
       error: error.message,
       stack: process.env.NODE_ENV === 'production' ? '' : error.stack
     });
   } else {
-    let searchList = [];
-    for (const result of users) {
-      if (user.friends.indexOf(result._id) === -1 && user._id.toString() !== result._id.toString() ) {
+    let friends = [];
+    for (const friendId in user.friends){
+      let [error, result] = await UserService.findUserById(friendId);
+      if (error) {
+        console.log(error);
+      } else {
         let friend = {
           username: result.username,
           _id: result._id,
@@ -52,15 +87,14 @@ if (err) {
           friends: result.friends,
           theme: result.theme
         }
-        searchList.push(friend)
+        friends.push(friend);
       }
     }
     res.json({
       status: true,
-      users: searchList
-    })
+      friends
+    });
   }
-}
 });
   
 

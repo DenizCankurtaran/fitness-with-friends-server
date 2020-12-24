@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const UserService = require('../services/UserService');
+const { generate } = require('../generateWorkout');
 let _db;
 
 const initDb = () => {
@@ -24,11 +25,12 @@ const initDb = () => {
         const [err, users] = await UserService.findUsers();
         if (!users || users.length === 0) {
             console.log('No existing user found. Creating superuser');
-            UserService.createUser({
+            let [err, user] = UserService.createUser({
                 username: process.env.SUPERUSER,
                 password: process.env.SUPERUSER_PW,
                 isAdmin: true,
             });
+            generate(user);
         }
     });
 

@@ -8,7 +8,9 @@ const UserSchema = mongoose.Schema({
     isAdmin: { type: Boolean, default: false },
     friends: { type: [String], default: [] },
     theme: { type: Number, default: 0 },
-    machines: { type: [String], default: [] }
+    machines: { type: [String], default: [] },
+    workoutStreak: { type: Number, default: 0 },
+    highestStreak: { type: Number, default: 0 }
     
 }, { timestamps: true });
 

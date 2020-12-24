@@ -11,7 +11,21 @@ const job = new CronJob('59 23 * * *', async () => {
     console.log(err, 'find users');
   } else {
     if (allUsers) {
-      allUsers.forEach( (user) => generate(user));
+      allUsers.forEach( (user) => {
+        let [error, workout] = await WorkoutService.findLatestWorkoutByUserId({userId: user._id});
+        if (workout) {
+          if ( workout.absolved ) {
+            user.workoutStreak += 1;
+            if (user.workoutStreak > user.highestStreak) {
+              user.highestStreak = user.workoutStreak;
+            }
+          } else {
+            user.workoutStreak = 0;
+          }
+          user.save();
+        }
+        generate(user);
+      });
     }
   }
 });

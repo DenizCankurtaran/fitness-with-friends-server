@@ -10,6 +10,8 @@ const database = require('./db');
 
 database.initDb();
 job.start();
+console.log(job);
+
 
 const port = process.env.PORT || 8080;
 const app = express();

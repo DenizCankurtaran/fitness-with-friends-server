@@ -4,12 +4,13 @@ const bcrypt = require('bcrypt');
 const UserSchema = mongoose.Schema({
     username: { type: String, required: true, unique: true, minlength: 2, maxlength: 64 },
     password: { type: String, required: true, minlength: 5, maxlength: 255 },
-    level: { type: Number, default: 0 },
     isAdmin: { type: Boolean, default: false },
     friends: { type: [String], default: [] },
+    level: { type: Number, default: 0 },
+    amount: { type: Number, default: 5 },
     theme: { type: Number, default: 0 },
     machines: { type: [String], default: [] },
-    workoutStreak: { type: Number, default: 0 },
+    currentStreak: { type: Number, default: 0 },
     highestStreak: { type: Number, default: 0 }
     
 }, { timestamps: true });

@@ -4,7 +4,7 @@ const ExerciseService = require('./services/ExerciseService');
 const WorkoutService = require('./services/WorkoutService');
 //const schedule = cron.schedule('59 23 * * *', () => {
 
-const job = new CronJob('56 23 * * *', async () => {
+const job = new CronJob('30 8 * * *', async () => {
   console.log('start generating workouts');
   const [err, allUsers] = await UserService.findUsers({});
   if (err) {
@@ -28,7 +28,7 @@ const job = new CronJob('56 23 * * *', async () => {
       });
     }
   }
-});
+}, null, false, 'Europe/Berlin');
 
 const generate = async (user) => {
   let exerciseList = [];

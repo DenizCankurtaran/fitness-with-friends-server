@@ -13,6 +13,14 @@ const job = new CronJob('59 23 * * *', async () => {
       allUsers.forEach( async (user) => {
         let [error, workout] = await WorkoutService.findLatestWorkoutByUserId({userId: user._id});
         if (workout) {
+          let absolvedExercises = workout.exercises.filter((exercise) => {
+            return exercise.absolved;
+          });
+          if(absolvedExercises.length === workout.exercises.length){
+            workout.absolved = true;
+            workout.save();
+          }
+          console.log(workout.absolved, user.username);  
           if ( workout.absolved ) {
             user.workoutStreak += 1;
             if (user.workoutStreak > user.highestStreak) {

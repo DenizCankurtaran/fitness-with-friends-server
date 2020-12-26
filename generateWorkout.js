@@ -5,7 +5,7 @@ const WorkoutService = require('./services/WorkoutService');
 
 const job = new CronJob('50 15 * * *', async () => {
   console.log('start generating workouts');
-  const [err, allUsers] = await UserService.findUsers({username: ''});
+  const [err, allUsers] = await UserService.findUsers('');
   if (err) {
     console.log(err, 'find users');
   } else {

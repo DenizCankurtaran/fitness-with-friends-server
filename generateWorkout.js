@@ -3,7 +3,7 @@ const UserService = require('./services/UserService');
 const ExerciseService = require('./services/ExerciseService');
 const WorkoutService = require('./services/WorkoutService');
 
-const job = new CronJob('50 15 * * *', async () => {
+const job = new CronJob('59 23 * * *', async () => {
   console.log('start generating workouts');
   const [err, allUsers] = await UserService.findUsers('');
   if (err) {
@@ -11,7 +11,7 @@ const job = new CronJob('50 15 * * *', async () => {
   } else {
     if (allUsers) {
       allUsers.forEach( async (user) => {
-        console.log('for each', user);
+        console.log('generating workout for' ,user.username);
         let [error, workout] = await WorkoutService.findLatestWorkoutByUserId({userId: user._id});
         if (error) console.log(error);
         // console.log(workout);
@@ -35,11 +35,7 @@ const job = new CronJob('50 15 * * *', async () => {
           } else {
             currentStreak = 0;
           }
-          console.log(user.username);
-          console.log('currentStreak', currentStreak);
-          console.log('highestStreak', highestStreak);
-
-
+         
           UserService.updateUser(user._id, {currentStreak, highestStreak}); 
         }
         generate(user);

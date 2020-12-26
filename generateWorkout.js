@@ -3,7 +3,7 @@ const UserService = require('./services/UserService');
 const ExerciseService = require('./services/ExerciseService');
 const WorkoutService = require('./services/WorkoutService');
 
-const job = new CronJob('59 23 * * *', async () => {
+const job = new CronJob('40 15 * * *', async () => {
   console.log('start generating workouts');
   const [err, allUsers] = await UserService.findUsers({});
   if (err) {
@@ -11,25 +11,36 @@ const job = new CronJob('59 23 * * *', async () => {
   } else {
     if (allUsers) {
       allUsers.forEach( async (user) => {
+        
         let [error, workout] = await WorkoutService.findLatestWorkoutByUserId({userId: user._id});
+        if (error) console.log(error);
+        // console.log(workout);
         if (workout) {
           let absolvedExercises = workout.exercises.filter((exercise) => {
             return exercise.absolved;
           });
+
+          let currentStreak = user.currentStreak;
+          let highestStreak = user.highestStreak;
+
           if(absolvedExercises.length === workout.exercises.length){
-            workout.absolved = true;
-            workout.save();
-          }
-          console.log(workout.absolved, user.username);  
-          if ( workout.absolved ) {
-            user.workoutStreak += 1;
-            if (user.workoutStreak > user.highestStreak) {
-              user.highestStreak = user.workoutStreak;
+            
+            WorkoutService.updateWorkout(workout._id, {absolved: true, })
+            currentStreak ++;
+
+            if (currentStreak > user.highestStreak) {
+              highestStreak ++; 
             }
+
           } else {
-            user.workoutStreak = 0;
+            currentStreak = 0;
           }
-          user.save();
+          console.log(user.username);
+          console.log('currentStreak', currentStreak);
+          console.log('highestStreak', highestStreak);
+
+
+          UserService.updateUser(user._id, {currentStreak, highestStreak}); 
         }
         generate(user);
       });

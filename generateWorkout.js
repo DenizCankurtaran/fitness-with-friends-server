@@ -3,15 +3,16 @@ const UserService = require('./services/UserService');
 const ExerciseService = require('./services/ExerciseService');
 const WorkoutService = require('./services/WorkoutService');
 
-const job = new CronJob('35 15 * * *', async () => {
+const job = new CronJob('40 15 * * *', async () => {
   console.log('start generating workouts');
   const [err, allUsers] = await UserService.findUsers({});
+  console.log(allUsers);
   if (err) {
     console.log(err, 'find users');
   } else {
     if (allUsers) {
       allUsers.forEach( async (user) => {
-        
+        console.log('for each', user);
         let [error, workout] = await WorkoutService.findLatestWorkoutByUserId({userId: user._id});
         if (error) console.log(error);
         // console.log(workout);

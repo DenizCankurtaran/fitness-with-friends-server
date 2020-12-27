@@ -98,6 +98,7 @@ router.post('/history/', async (req, res) => {
         stack: process.env.NODE_ENV === 'production' ? '' : err.stack
     });
   } else {
+    workouts.shift();
     res.json({
       status: true,
       workouts

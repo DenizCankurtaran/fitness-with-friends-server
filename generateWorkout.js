@@ -65,7 +65,7 @@ const generate = async (user) => {
     }
   }
 
-  WorkoutService.createWorkout({userId: user._id, exercises: exerciseList, username: user.username});
+  WorkoutService.createWorkout({userId: user._id, exercises: exerciseList, username: user.username, level: user.level});
 
 }
  

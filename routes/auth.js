@@ -64,7 +64,7 @@ router.post('/login/', async (req, res) => {
 router.post('/signup/', async (req, res) => {
     let { username, password, level, amount } = req.body.user;
 
-    const [err, user, level, amount] = await UserService.createUser({
+    const [err, user] = await UserService.createUser({
         username,
         password,
         level: level ? level: 0 ,

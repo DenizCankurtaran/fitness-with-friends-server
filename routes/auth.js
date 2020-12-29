@@ -5,7 +5,7 @@ const { generate } = require('../generateWorkout');
 const router = express.Router();
 
 router.post('/login/', async (req, res) => {
-    const { username, password } = req.body.user;
+    const { username, password} = req.body.user;
     const [err, user] = await UserService.findUser({ username: username });
     if (err) {
         res.status(500);
@@ -25,17 +25,21 @@ router.post('/login/', async (req, res) => {
                     });
     
                     res.status(200);
+                    res.set('Access-Control-Expose-Headers', 'Authorization');
                     res.set('Authorization', `Bearer ${token}`);
                     res.json({
                         status: true,
                         user: {
                             username: user.username,
-                            email: user.email,
-                            isSeedling: user.isSeedling,
                             isAdmin: user.isAdmin,
-                            isDeleted: user.isDeleted,
                             _id: user._id,
-                            createdAt: user.createdAt
+                            createdAt: user.createdAt,
+                            level: user.level,
+                            amount: user.amount,
+                            theme: user.theme,
+                            machines: user.machines,
+                            currentStreak: user.currentStreak,
+                            highestStreak: user.highestStreak
                         }
                     });
                 } else {
@@ -58,12 +62,13 @@ router.post('/login/', async (req, res) => {
 });
 
 router.post('/signup/', async (req, res) => {
-    let { username, password, level } = req.body.user;
+    let { username, password, level, amount } = req.body.user;
 
-    const [err, user] = await UserService.createUser({
+    const [err, user, level, amount] = await UserService.createUser({
         username,
         password,
-        level
+        level: level ? level: 0 ,
+        amount: amount ? amount: 5
     });
     if (err) {
         res.status(403);

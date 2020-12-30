@@ -152,7 +152,8 @@ router.put('/cheer/', async (req, res) => {
       workout.save();
     }
     res.json({
-      status: true
+      status: true,
+      alreadycheered: !index === -1
     });
   }
 });

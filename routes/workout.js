@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const WorkoutService = require('../services/WorkoutService');
 const UserService = require('../services/UserService');
+const User = require('../schemas/UserSchema');
 
 router.post('/', async (req, res) => {
   let { level, _id } = req.body.user;
@@ -105,6 +106,55 @@ router.post('/history/', async (req, res) => {
     })
   }
 
+});
+
+router.post('/getcheers/', async (req, res) => {
+  let { _id } = req.body.user;
+  let [err, workout] = await WorkoutService.findLatestWorkoutByUserId({userId: _id});
+  if (err) {
+    res.status(500);
+    res.json({
+        status: false,
+        error: err.message,
+        stack: process.env.NODE_ENV === 'production' ? '' : err.stack
+    });
+  } else {
+    let cheers = [];
+    for (const cheer of workout.cheers) {
+      let [error, user] = UserService.findUserById(cheer);
+      if (error) console.log(error);
+      else {
+        cheers.push(user.username);
+      }
+    }
+    res.json({
+      status: true,
+      cheers
+    })
+  }
+});
+
+router.put('/cheer/', async (req, res) => {
+  let { _id } = req.body.user;
+  let friendId = req.body.friend._id;
+  let [err, workout] = await WorkoutService.findLatestWorkoutByUserId({userId: friendId});
+  if (err) {
+    res.status(500);
+    res.json({
+        status: false,
+        error: err.message,
+        stack: process.env.NODE_ENV === 'production' ? '' : err.stack
+    });
+  } else {
+    let index = workout.cheers.indexOf(_id);
+    if (index === -1) {
+      workout.cheers.push(_id);
+      workout.save();
+    }
+    res.json({
+      status: true
+    });
+  }
 });
 
 module.exports = router;

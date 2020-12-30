@@ -8,7 +8,8 @@ const WorkoutSchema = mongoose.Schema({
     // exercises: [Exercise]
     exercises: [Object],
     progress: { type: Number, default: 0 },
-    level: {type: Number, default: 0}
+    level: {type: Number, default: 0},
+    cheers: {type: [String], default: []}
     
 }, { timestamps: true });
 

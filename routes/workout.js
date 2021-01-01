@@ -147,13 +147,14 @@ router.put('/cheer/', async (req, res) => {
     });
   } else {
     let index = workout.cheers.indexOf(_id);
-    if (index === -1) {
+    let valid = index === -1 && !workout.absolved
+    if (valid ) {
       workout.cheers.push(_id);
       workout.save();
     }
     res.json({
       status: true,
-      alreadycheered: !index === -1
+      alreadycheered: !valid
     });
   }
 });

@@ -35,6 +35,7 @@ UserSchema.pre('findOneAndUpdate', function (next) {
 
 UserSchema.methods.checkPassword = function (password, next) {
     bcrypt.compare(password, this.password, (err, isMatch) => {
+        console.log(password, this.password);
         if (err) return next(err);
         next(null, isMatch);
     });

@@ -43,6 +43,8 @@ const isAdmin = async (req, res, next) => {
                         next(error);
                     }   
                 }
+            } else {
+                next();
             }
         } else {
             next();
@@ -69,5 +71,6 @@ const errorHandler = (error, req, res, next) => {
 module.exports = {
     auth,
     cannotGet,
-    errorHandler
+    errorHandler,
+    isAdmin
 }

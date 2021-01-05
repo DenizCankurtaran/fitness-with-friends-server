@@ -1,5 +1,7 @@
 # About
 
+[download App](https://github.com/GoerkemYalcinkaya/fitness-with-friends/releases)
+
 ## Idea
 
 *Fitness with friends* is an app which provides daily workout challenges to help one stay fit. 

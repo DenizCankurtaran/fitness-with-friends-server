@@ -27,7 +27,8 @@ app.get('/', (req, res) => {
   });
 });
 app.use('/', routes.auth);
-// app.use(middleware.auth);
+app.use(middleware.auth);
+// app.use(middleware.isAdmin);
 
 app.use('/user', routes.user);
 app.use('/exercise', routes.exercise);

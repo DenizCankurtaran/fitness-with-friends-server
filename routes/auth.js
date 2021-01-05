@@ -7,6 +7,7 @@ const router = express.Router();
 router.post('/login/', async (req, res) => {
     const { username, password} = req.body.user;
     const [err, user] = await UserService.findUser({ username: username });
+    console.log(username, password);
     if (err) {
         res.status(500);
         res.json({
@@ -16,9 +17,10 @@ router.post('/login/', async (req, res) => {
         });
     } else {
         if (user !== null) {
-            await user.checkPassword(password, (err, isMatch) => {
+            user.checkPassword(password, (err, isMatch) => {
+                console.log(err, isMatch);
                 if (isMatch) {
-    
+                    
                     const token = jwt.sign({ _id: user._id }, process.env.SECRET_KEY, {
                         algorithm: 'HS256',
                         expiresIn: '2y'

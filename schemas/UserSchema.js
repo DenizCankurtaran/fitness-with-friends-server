@@ -16,6 +16,7 @@ const UserSchema = mongoose.Schema({
 }, { timestamps: true });
 
 UserSchema.pre('save', function (next) {
+    if (!this.isModified('password')) return next();
     bcrypt.hash(this.password, 10).then((hashedPassword) => {
         this.password = hashedPassword;
         next();
@@ -24,6 +25,7 @@ UserSchema.pre('save', function (next) {
 
 UserSchema.pre('findOneAndUpdate', function (next) {
     if (this._update.password) {
+        
         bcrypt.hash(this._update.password, 10).then((hashedPassword) => {
             this._update.password = hashedPassword;
             next();
@@ -35,7 +37,6 @@ UserSchema.pre('findOneAndUpdate', function (next) {
 
 UserSchema.methods.checkPassword = function (password, next) {
     bcrypt.compare(password, this.password, (err, isMatch) => {
-        console.log(password, this.password);
         if (err) return next(err);
         next(null, isMatch);
     });

@@ -25,7 +25,7 @@ const initDb = () => {
         const [err, users] = await UserService.findUsers();
         if (!users || users.length === 0) {
             console.log('No existing user found. Creating superuser');
-            let [err, user] = UserService.createUser({
+            let [err, user] = await UserService.createUser({
                 username: process.env.SUPERUSER,
                 password: process.env.SUPERUSER_PW,
                 isAdmin: true,
